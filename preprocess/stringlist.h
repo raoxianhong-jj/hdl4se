@@ -124,7 +124,7 @@ static int stringlistaddstring(stringitem * list, const char * string)
 	pItem = (stringitem *)malloc(sizeof(stringitem));
 	if (pItem == NULL)
 		return -1;
-	pItem->string = _strdup(string);
+	pItem->string = STRDUP(string);
 	DLIST_ADDITEM(list, pItem);
 	return 0;
 }
@@ -135,7 +135,7 @@ static int stringlistaddstringfirst(stringitem * list, const char * string)
 	pItem = (stringitem *)malloc(sizeof(stringitem));
 	if (pItem == NULL)
 		return -1;
-	pItem->string = _strdup(string);
+	pItem->string = STRDUP(string);
 	pItem->pLast = list; \
 	pItem->pNext = (list)->pNext; \
 	pItem->pNext->pLast = pItem; \

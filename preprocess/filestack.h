@@ -80,7 +80,7 @@ static filestack* filestack_push_file(filestack * stack, const char * filename)
 	if (pitem == NULL)
 		return NULL;
 	memset(pitem, 0, sizeof(filestack));
-	pitem->filename = _strdup(filename);
+	pitem->filename = STRDUP(filename);
 	pitem->pNext = stack; 
 	pitem->pLast = stack->pLast; 
 	pitem->pNext->pLast = pitem; 

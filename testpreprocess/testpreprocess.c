@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	IPreprocess ** p;
 	preprocessVerilogCreate(&p);
 	objectCall1(p, AddIncludePath, "c:/tools/");
-	objectCall2(p, SetFile, "d:/test.v", 0);
+	objectCall2(p, SetFile, argv[1], 0);
 	
 	do {
 		len = objectCall2(p, GetText, buf, 8191);

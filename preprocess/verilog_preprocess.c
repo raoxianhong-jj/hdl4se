@@ -46,6 +46,8 @@
 #include "verilog_preprocess.h"
 #undef IMPLEMENT_GUID
 
+#define STRDUP strdup
+
 #include "stringlist.h"
 #include "filestack.h"
 
@@ -537,12 +539,12 @@ static int verilog_preprocess_HandleCDName(sVerilogPreprocess * pPreprocess)
 				case CDN_CELLDEFINE:
 					pPreprocess->state = STATE_INITIAL;
 					verilog_preprocess_EnterCellDefine(pPreprocess);
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;
 				case CDN_ENDCELLDEFINE:
 					pPreprocess->state = STATE_INITIAL;
 					verilog_preprocess_LeaveCellDefine(pPreprocess);
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;				
 				case CDN_DEFAULT_NETTYPE:
 					pPreprocess->state = STATE_CD_DEFAULT_NETTYPE;
@@ -560,7 +562,7 @@ static int verilog_preprocess_HandleCDName(sVerilogPreprocess * pPreprocess)
 				case CDN_ELSE:
 					pPreprocess->state = STATE_INITIAL;
 					verilog_preprocess_preprocess_PreAction(pPreprocess, PA_ELSE, "", "");
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;
 				case CDN_ELSIF:
 					pPreprocess->state = STATE_CD_ELSEIF;
@@ -568,7 +570,7 @@ static int verilog_preprocess_HandleCDName(sVerilogPreprocess * pPreprocess)
 				case CDN_ENDIF:
 					pPreprocess->state = STATE_INITIAL;
 					verilog_preprocess_preprocess_PreAction(pPreprocess, PA_ENDIF, "", "");
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;
 				case CDN_IFDEF:
 					pPreprocess->state = STATE_CD_IFDEF;
@@ -581,11 +583,11 @@ static int verilog_preprocess_HandleCDName(sVerilogPreprocess * pPreprocess)
 					break;
 				case CDN_NOUNCONNECTED_DRIVE:
 					pPreprocess->state = STATE_INITIAL;
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;
 				case CDN_UNCONNECTED_DRIVE:
 					pPreprocess->state = STATE_INITIAL;
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;
 				case CDN_INCLUDE:
 					pPreprocess->state = STATE_CD_INCLUDE;
@@ -601,7 +603,7 @@ static int verilog_preprocess_HandleCDName(sVerilogPreprocess * pPreprocess)
 					break;
 				case CDN_ENDKEYWORDS:
 					pPreprocess->state = STATE_INITIAL;
-					verilog_preprocess_error_to_eol(pPreprocess);
+					//verilog_preprocess_error_to_eol(pPreprocess);
 					break;
 				}
 				break;
@@ -957,7 +959,7 @@ static int verilog_preprocess_state_default_nettype(sVerilogPreprocess * pPrepro
 	} else if (pPreprocess->state == STATE_CD_DEFAULT_NETTYPE_NAME) {
 		verilog_preprocess_DefaultNetType(pPreprocess, pPreprocess->token);
 		pPreprocess->state = STATE_INITIAL;
-		verilog_preprocess_error_to_eol(pPreprocess);
+		//verilog_preprocess_error_to_eol(pPreprocess);
 		return 2;
 	}
 	return 0;
@@ -1004,7 +1006,7 @@ static int verilog_preprocess_state_undef(sVerilogPreprocess * pPreprocess, int 
 			pPreprocess->tokenstate = TOKEN_NONE;
 			pPreprocess->state = STATE_INITIAL;
 			verilog_preprocess_preprocess_PreAction(pPreprocess, PA_UNDEF, pPreprocess->define_name, "");
-			verilog_preprocess_error_to_eol(pPreprocess);
+			//verilog_preprocess_error_to_eol(pPreprocess);
 		}
 		return NEXT_CONTINUE;
 	}
@@ -1052,7 +1054,7 @@ static int verilog_preprocess_state_elseif(sVerilogPreprocess * pPreprocess, int
 			pPreprocess->tokenstate = TOKEN_NONE;
 			pPreprocess->state = STATE_INITIAL;
 			verilog_preprocess_preprocess_PreAction(pPreprocess, PA_ELSEIFDEF, pPreprocess->define_name, "");
-			verilog_preprocess_error_to_eol(pPreprocess);
+			//verilog_preprocess_error_to_eol(pPreprocess);
 		}
 		return NEXT_CONTINUE;
 	}
@@ -1100,7 +1102,7 @@ static int verilog_preprocess_state_ifdef(sVerilogPreprocess * pPreprocess, int 
 			pPreprocess->tokenstate = TOKEN_NONE;
 			pPreprocess->state = STATE_INITIAL;
 			verilog_preprocess_preprocess_PreAction(pPreprocess, PA_IFDEF, pPreprocess->define_name, "");
-			verilog_preprocess_error_to_eol(pPreprocess);
+			//verilog_preprocess_error_to_eol(pPreprocess);
 		}
 		return NEXT_CONTINUE;
 	}
@@ -1148,7 +1150,7 @@ static int verilog_preprocess_state_ifndef(sVerilogPreprocess * pPreprocess, int
 			pPreprocess->tokenstate = TOKEN_NONE;
 			pPreprocess->state = STATE_INITIAL;
 			verilog_preprocess_preprocess_PreAction(pPreprocess, PA_IFNDEF, pPreprocess->define_name, "");
-			verilog_preprocess_error_to_eol(pPreprocess);
+			//verilog_preprocess_error_to_eol(pPreprocess);
 		}
 		return NEXT_CONTINUE;
 	}
@@ -1187,7 +1189,7 @@ static int verilog_preprocess_state_include(sVerilogPreprocess * pPreprocess, in
 			pPreprocess->tokenstate = TOKEN_NONE;
 			pPreprocess->state = STATE_INITIAL;
 			verilog_preprocess_preprocess_PreAction(pPreprocess, PA_INCLUDE, pPreprocess->token, "");
-			verilog_preprocess_error_to_eol(pPreprocess);
+			//verilog_preprocess_error_to_eol(pPreprocess);
 		}
 		return NEXT_CONTINUE;
 	}
@@ -1358,7 +1360,7 @@ static int verilog_preprocess_state_timescale(sVerilogPreprocess * pPreprocess, 
 				);
 		}
 		pPreprocess->tokenstate = TOKEN_NONE;
-		verilog_preprocess_error_to_eol(pPreprocess);
+		//verilog_preprocess_error_to_eol(pPreprocess);
 		pPreprocess->state = STATE_INITIAL;
 		pPreprocess->tokentype = TT_NONE;
 		return NEXT_CONTINUE;
@@ -1676,7 +1678,7 @@ static int verilog_preprocess_state_define(sVerilogPreprocess * pPreprocess, int
 			pPreprocess->state = STATE_INITIAL;
 			verilog_preprocess_setdefineparam(pPreprocess);
 			verilog_preprocess_preprocess_PreAction(pPreprocess, PA_DEFINE, pPreprocess->define_name, pPreprocess->define_text);
-			verilog_preprocess_error_to_eol(pPreprocess);
+			//verilog_preprocess_error_to_eol(pPreprocess);
 		}
 		return NEXT_CONTINUE;
 	} else if (pPreprocess->state == STATE_CD_DEFINE_PARAM_NAME_PRO) {
@@ -1928,7 +1930,7 @@ char * verilog_preprocess_expand_macro(sVerilogPreprocess * pPreprocess, char * 
 		if (ch == '`') {
 			state = 1;
 		} else if (state == 1) {
-			if (isdigit(ch)) {
+			if (isdigital(ch)) {
 				index = ch - '0';
 				state = 2;
 			} else {
@@ -1937,7 +1939,7 @@ char * verilog_preprocess_expand_macro(sVerilogPreprocess * pPreprocess, char * 
 				state = 0;
 			}
 		} else if (state == 2) {
-			if (isdigit(ch)) {
+			if (isdigital(ch)) {
 				index = index * 10 + ch - '0';
 			} else {
 				int ind;

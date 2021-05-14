@@ -9,3 +9,7 @@ project ("hdl4se")
 add_subdirectory ("lcom")
 add_subdirectory ("preprocess")
 add_subdirectory ("testpreprocess")
+add_subdirectory ("glfw")
+add_subdirectory ("glew")
+
+
